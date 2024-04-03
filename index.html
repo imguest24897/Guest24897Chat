@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/noVNC/1.3.0/noVNC.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest24897Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #chat-container {
+            width: 400px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        #message-area {
+            height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #f9f9f9;
+            transition: background-color 0.3s;
+        }
+
+        #message-area div {
+            margin-bottom: 10px;
+        }
+
+        #message-input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: none;
+            border-top: 1px solid #ddd;
+            font-size: 16px;
+            resize: none;
+            outline: none;
+        }
+
+        #message-input:focus {
+            border-top-color: #007bff;
+        }
+
+        #send-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 0 0 10px 10px;
+            cursor: pointer;
+            outline: none;
+            transition: background-color 0.3s;
+        }
+
+        #send-button:hover {
+            background-color: #0056b3;
+        }
+
+        .message-container {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .message-container:last-child {
+            border-bottom: none;
+        }
+
+        .message-content {
+            font-size: 14px;
+        }
+
+        .message-content.owner-message {
+            color: red;
+        }
+
+        .notification {
+            text-align: center;
+            color: #888;
+            font-size: 12px;
+            padding: 5px 0;
+        }
+
+        .notification.reconnecting {
+            color: #f00;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+        <div id="computer-container">
+        <!-- Include NoVNC JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/noVNC/1.3.0/noVNC.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/websockify/0.9.0/websockify.min.js"></script>
+        <script>
+            // Create a new NoVNC connection
+            const vnc = new NoVNC();
+            
+            // Connect to the VNC server
+            vnc.connect('tcp://localhost:5198');
+            
+            // Append the NoVNC canvas to the computer container
+            document.getElementById('computer-container').appendChild(vnc.canvas);
+        </script>
+    </div>
+    <div id="chat-container">
+        <input type="text" id="username-input" placeholder="Your Username"> <!-- Added username input field -->
+        <div id="message-area"></div>
+        <textarea id="message-input" placeholder="Type your message..." rows="3"></textarea>
+        <button id="send-button">Send</button>
+        <div id="connection-status" class="notification"></div>
+    </div>
+    
+    <audio id="notification-sound" src="https://cdn.pixabay.com/download/audio/2024/02/07/audio_05ef91af0b.mp3?filename=message-notification-190034.mp3"></audio>
+
+    <script>
+        let socket = null;
+        let reconnectingInterval = null;
+        const notificationSound = document.getElementById('notification-sound');
+
+        // Function to establish WebSocket connection
+        function connect() {
+            socket = new WebSocket('wss://e3c0c45523cc5a77c682f8e399bd9685.serveo.net'); // Change this URL to your WebSocket server URL
+
+            // WebSocket event listeners
+            socket.onopen = function(event) {
+                console.log('Connected to WebSocket server');
+                displayNotification('');
+                enableInputs();
+            };
+
+            socket.onmessage = handleMessageReceived;
+
+            socket.onclose = function(event) {
+                console.log('Disconnected from WebSocket server');
+                displayNotification('Lost connection to server, retrying to connect after 2 seconds...');
+                disableInputs();
+                reconnectingInterval = setInterval(function() {
+                    connect();
+                    clearInterval(reconnectingInterval);
+                }, 2000);
+            };
+        }
+
+        // Function to handle received messages
+        function handleMessageReceived(event) {
+            const message = JSON.parse(event.data);
+            if (message.message_text.startsWith('/')) {
+                displaySystemMessage(message.message_text);
+            } else {
+                displayMessage(message.username, message.message_text);
+                playNotificationSound();
+            }
+        }
+
+        // Function to send message to WebSocket server
+        function sendMessage() {
+            const messageInput = document.getElementById('message-input');
+            const message = messageInput.value.trim();
+            if (message !== '') {
+                const data = {
+                    username: getUsername(),
+                    message_text: message
+                };
+                socket.send(JSON.stringify(data));
+                messageInput.value = '';
+                playNotificationSound();
+            }
+        }
+
+        // Function to play notification sound
+        function playNotificationSound() {
+            notificationSound.play();
+        }
+
+        // Function to display message in the chat window
+        function displayMessage(username, message) {
+            const messageArea = document.getElementById('message-area');
+            const messageContainer = document.createElement('div');
+            messageContainer.classList.add('message-container');
+            const messageContent = document.createElement('div');
+            messageContent.classList.add('message-content');
+            if (username === 'Guest 24897') {
+                messageContent.classList.add('owner-message');
+            }
+            messageContent.textContent = `${username}: ${message}`;
+            messageContainer.appendChild(messageContent);
+            messageArea.appendChild(messageContainer);
+            // Scroll to bottom
+            messageArea.scrollTop = messageArea.scrollHeight;
+        }
+
+        // Function to display system message in the chat window
+        function displaySystemMessage(message) {
+            const messageArea = document.getElementById('message-area');
+            const messageContainer = document.createElement('div');
+            messageContainer.classList.add('message-container');
+            const messageContent = document.createElement('div');
+            messageContent.classList.add('message-content', 'system-message');
+            messageContent.textContent = message;
+            messageContainer.appendChild(messageContent);
+            messageArea.appendChild(messageContainer);
+            // Scroll to bottom
+            messageArea.scrollTop = messageArea.scrollHeight;
+        }
+
+        // Function to display notification
+        function displayNotification(message) {
+            const notification = document.getElementById('connection-status');
+            notification.textContent = message;
+            if (message === '') {
+                notification.classList.remove('reconnecting');
+            } else {
+                notification.classList.add('reconnecting');
+            }
+        }
+
+        // Function to disable inputs and buttons
+        function disableInputs() {
+            const messageInput = document.getElementById('message-input');
+            const sendButton = document.getElementById('send-button');
+            messageInput.setAttribute('disabled', 'disabled');
+            sendButton.setAttribute('disabled', 'disabled');
+        }
+
+        // Function to enable inputs and buttons
+        function enableInputs() {
+            const messageInput = document.getElementById('message-input');
+            const sendButton = document.getElementById('send-button');
+            messageInput.removeAttribute('disabled');
+            sendButton.removeAttribute('disabled');
+        }
+
+        // Function to get username
+        function getUsername() {
+            const usernameInput = document.getElementById('username-input');
+            return usernameInput.value.trim();
+        }
+
+        // Event listener for "Send" button click
+        document.getElementById('send-button').addEventListener('click', sendMessage);
+
+        // Event listener for Enter key press in message input
+        document.getElementById('message-input').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Connect to WebSocket server on page load
+        connect();
+    </script>
+</body>
+</html>
+
