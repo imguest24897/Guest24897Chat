@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/noVNC/1.3.0/noVNC.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Imagine a web-site, where you can chat...">
+  <meta property="og:title" content="Guest24897Chat - Join the ultimate chatting universe">
+  <meta property="og:description" content="Imagine a web-site, where you can chat...">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<style>
+.material-symbols-rounded {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+</style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest24897Chat</title>
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+@media (prefers-color-scheme: light) {
+    body {
+        background-color: #f0f0f0;
+    }
+
+    #chat-container {
+        width: 400px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    #message-area {
+        height: 300px;
+        overflow-y: auto;
+        padding: 10px;
+        background-color: #f9f9f9;
+        transition: background-color 0.3s;
+    }
+
+    #message-area div {
+        margin-bottom: 10px;
+    }
+
+    #message-input, #username-input {
+        width: calc(100% - 20px);
+        padding: 10px;
+        border: none;
+        border-top: 1px solid #ddd;
+        font-size: 16px;
+        resize: none;
+        outline: none;
+    }
+
+    #message-input:focus, #username-input:focus {
+        border-top-color: #007bff;
+    }
+
+    #send-button {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 0 0 10px 10px;
+        cursor: pointer;
+        outline: none;
+        transition: background-color 0.3s;
+    }
+
+    #send-button:hover {
+        background-color: #0056b3;
+    }
+
+    .message-container {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .message-container:last-child {
+        border-bottom: none;
+    }
+
+    .message-content {
+        font-size: 14px;
+    }
+
+    .message-content.owner-message {
+        color: red;
+    }
+
+    .notification {
+        text-align: center;
+        color: #888;
+        font-size: 12px;
+        padding: 5px 0;
+    }
+
+    .notification.reconnecting {
+        color: #f00;
+        animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            opacity: 0;
+        }
+        50% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+}
+
+@media (prefers-color-scheme: dark), (prefers-color-scheme: no-preference) {
+    body {
+        background-color: #1a1a1a;
+    }
+
+    #chat-container {
+        width: 400px;
+        background-color: #292929;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+    }
+
+    #message-area {
+        height: 300px;
+        overflow-y: auto;
+        padding: 10px;
+        background: linear-gradient(180deg, #292929 0%, #1a1a1a 100%);
+        transition: background-color 0.3s;
+    }
+
+    #message-area div {
+        margin-bottom: 10px;
+    }
+
+    #message-input, #username-input {
+        width: calc(100% - 20px);
+        padding: 10px;
+        border: none;
+        border-top: 1px solid #333;
+        font-size: 16px;
+        resize: none;
+        outline: none;
+        background-color: #222;
+        color: #fff;
+    }
+
+    #message-input:focus, #username-input:focus {
+        border-top-color: #007bff;
+    }
+
+    #send-button {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 0 0 10px 10px;
+        cursor: pointer;
+        outline: none;
+        transition: background-color 0.3s;
+    }
+
+    #send-button:hover {
+        background-color: #0056b3;
+    }
+
+    .message-container {
+        padding: 10px;
+        border-bottom: 1px solid #333;
+    }
+
+    .message-container:last-child {
+        border-bottom: none;
+    }
+
+    .message-content {
+        font-size: 14px;
+        color: #ddd;
+    }
+
+    .message-content.owner-message {
+        color: #ff69b4;
+    }
+
+    .notification {
+        text-align: center;
+        color: #aaa;
+        font-size: 12px;
+        padding: 5px 0;
+    }
+
+    .notification.reconnecting {
+        color: #ff1493;
+        animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            opacity: 0;
+        }
+        50% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+}
+
+    </style>
+</head>
+<body>
+    <script>
+        // Function to check if the user's IP address is banned
+        function checkBannedIP() {
+            const bannedIP = '';
+            const userIP = '<<>>'; // Replace this with the actual IP address of the user
+            if (userIP === bannedIP) {
+                document.body.innerHTML = '<center><h1 style="font-family: arial;">You have been banned from Guest24897Chat.</h1></center>';
+            }
+        }
+        // Call the function when the page loads
+        checkBannedIP();
+    </script>
+        <div id="computer-container">
+        <!-- Include NoVNC JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/noVNC/1.3.0/noVNC.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/websockify/0.9.0/websockify.min.js"></script>
+        <script>
+            // Create a new NoVNC connection
+            const vnc = new noVNC();
+            
+            // Connect to the VNC server
+            vnc.connect('tcp://localhost:5198');
+            
+            // Append the NoVNC canvas to the computer container
+            document.getElementById('computer-container').appendChild(vnc.canvas);
+        </script>
+    </div>
+    <div id="chat-container">
+        <center style="color: #ffffff;"><br><span class="material-symbols-outlined">
+signal_wifi_statusbar_not_connected
+</span><br> Make sure you are connected to Wi-Fi. If you lost connection, this may can be Wi-Fi, or you have been banned from Guest24897Chat. Have nice chatting! <br> <br><hr><br><span class="material-symbols-rounded">
+warning
+</span><br><b>Warning! </b><br>You are using Guest24897Chat Pre-Beta. This may can cause problems. <br><br><hr><br><span class="material-symbols-outlined">
+person
+</span><br> Username <b style="color: red">* (Required)</b>: <input type="text" id="username-input" class="username-input" placeholder="Enter your username here..." required="true" min="1"></center>
+        <div id="message-area"></div>
+        <textarea id="message-input" placeholder="Type message here..." rows="3"></textarea>
+        <button id="send-button"><span class="material-symbols-outlined">
+send
+</span><br> Send</button>
+<br><small style="text-align: right; color: gray;"><p>Guest24897Chat v0.2.1 Pre-Beta</p></small>
+<br><small style="text-align: right; color: gray;"><p>Pre-beta can contain problems.</p></small>
+<div id="connection-status" class="notification"></div>
+    </div>
+    
+    <audio id="notification-sound" src="notification.mp3"></audio>
+
+    <script>
+        let socket = null;
+        let reconnectingInterval = null;
+        const notificationSound = document.getElementById('notification-sound');
+
+        // Function to establish WebSocket connection
+        function connect() {
+            socket = new WebSocket('wss://03c6b1f2781057621f4f927f0c3a887a.serveo.net'); // Change this URL to your WebSocket server URL
+
+            // WebSocket event listeners
+            socket.onopen = function(event) {
+                console.log('Connected');
+                displayNotification('Connected.');
+                enableInputs();
+            };
+
+            socket.onmessage = handleMessageReceived;
+
+            socket.onclose = function(event) {
+                console.log('Disconnected');
+                displayNotification('Connection to server is lost. Retrying connection after 2 seconds...');
+                disableInputs();
+                reconnectingInterval = setInterval(function() {
+                    connect();
+                    clearInterval(reconnectingInterval);
+                }, 2000);
+            };
+        }
+
+        // Function to handle received messages
+        function handleMessageReceived(event) {
+            const message = JSON.parse(event.data);
+            if (message.message_text.startsWith('/')) {
+                displaySystemMessage(message.message_text);
+            } else {
+                displayMessage(message.username, message.message_text);
+                playNotificationSound();
+            }
+        }
+
+        // Function to send message to WebSocket server
+        function sendMessage() {
+            const messageInput = document.getElementById('message-input');
+            const message = messageInput.value.trim();
+            if (message !== '') {
+                const data = {
+                    username: getUsername(),
+                    message_text: message
+                };
+                socket.send(JSON.stringify(data));
+                messageInput.value = '';
+                playNotificationSound();
+            }
+        }
+
+        // Function to play notification sound
+        function playNotificationSound() {
+            notificationSound.play();
+        }
+
+        // Function to display message in the chat window
+        function displayMessage(username, message) {
+            const messageArea = document.getElementById('message-area');
+            const messageContainer = document.createElement('div');
+            messageContainer.classList.add('message-container');
+            const messageContent = document.createElement('div');
+            messageContent.classList.add('message-content');
+            if (username === 'Guest 24897') {
+                messageContent.classList.add('owner-message');
+            }
+            if (username === 'skyhighsundae') {
+                messageContent.classList.add('owner-message');
+            }
+            if (username === 'buttons') {
+                messageContent.classList.add('send-button');
+            }
+            messageContent.textContent = `${username}: ${message}`;
+            messageContainer.appendChild(messageContent);
+            messageArea.appendChild(messageContainer);
+            // Scroll to bottom
+            messageArea.scrollTop = messageArea.scrollHeight;
+        }
+
+        // Function to display system message in the chat window
+        function displaySystemMessage(message) {
+            const messageArea = document.getElementById('message-area');
+            const messageContainer = document.createElement('div');
+            messageContainer.classList.add('message-container');
+            const messageContent = document.createElement('div');
+            messageContent.classList.add('message-content', 'system-message');
+            messageContent.textContent = message;
+            messageContainer.appendChild(messageContent);
+            messageArea.appendChild(messageContainer);
+            // Scroll to bottom
+            messageArea.scrollTop = messageArea.scrollHeight;
+        }
+
+        // Function to display notification
+        function displayNotification(message) {
+            const notification = document.getElementById('connection-status');
+            notification.textContent = message;
+            if (message === '') {
+                notification.classList.remove('reconnecting');
+            } else {
+                notification.classList.add('reconnecting');
+            }
+        }
+
+        // Function to disable inputs and buttons
+        function disableInputs() {
+            const messageInput = document.getElementById('message-input');
+            const sendButton = document.getElementById('send-button');
+            messageInput.setAttribute('disabled', 'disabled');
+            sendButton.setAttribute('disabled', 'disabled');
+        }
+
+        // Function to enable inputs and buttons
+        function enableInputs() {
+            const messageInput = document.getElementById('message-input');
+            const sendButton = document.getElementById('send-button');
+            messageInput.removeAttribute('disabled');
+            sendButton.removeAttribute('disabled');
+        }
+
+        // Function to get username
+        function getUsername() {
+            const usernameInput = document.getElementById('username-input');
+            return usernameInput.value.trim();
+        }
+
+        // Event listener for "Send" button click
+        document.getElementById('send-button').addEventListener('click', sendMessage);
+
+        // Event listener for Enter key press in message input
+        document.getElementById('message-input').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Connect to WebSocket server on page load
+        connect();
+    </script>
+    <script src="https://cdn.pulse.is/livechat/loader.js" data-live-chat-id="6633cb29bd3482fe4a0de440" async></script>
+</body>
+</html>

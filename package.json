@@ -1,10 +1,10 @@
 {
-  "name": "websocket-htmlchat",
-  "version": "1.0.0",
+  "name": "guest24897chat",
+  "version": "0.2.1",
   "description": "Simple HTML chat with Websocket.",
-  "main": "websocket.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "startserver": "node server.js"
   },
   "author": "Guest24897",
   "license": "ISC"
