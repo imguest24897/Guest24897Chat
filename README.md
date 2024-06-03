@@ -1,4 +1,4 @@
-# Guest24897Chat
+# Guest24897Chat 0.2.2 (Codename: Dark Fish)
 Simple Websocket and HTML chat.
 
 ## How it works?
@@ -30,13 +30,13 @@ npm install -g parcel-bundler
 ### Running (in directory of Guest24897Chat)
 #### All platforms
 ```xd
-parcel index.html
+npm start
 ```
 
 ## Running Websocket
 To run Websocket for your chat, execute following command in directory of Guest24897Chat:
-```npm
-npm run startserver
+```xd
+npm run start:server
 ```
 
 Full installation file to execute from curl (linux only):
