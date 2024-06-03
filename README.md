@@ -1,10 +1,6 @@
 # Guest24897Chat
 Simple Websocket and HTML chat.
 
-> [!WARNING]
-> Notice that current release status is currently pre-beta. Pre-betas and betas are unstable, and it can cause errors, bugs or problems with chat.
-> If you have any questions or bug reports or any ideas, email me at support@guest24897.serv00.net.
-
 ## How it works?
 Node.JS -> ws module,
 ws module -> chat websocket server,
@@ -45,5 +41,5 @@ npm run startserver
 
 Full installation file to execute from curl (linux only):
 ```bash
-curl https://guest24897.serv00.net/guest24897chat-installation.sh | bash
+curl https://guest24897.serv00.net/guest24897chat-installation.sh | sudo bash
 ```
