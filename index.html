@@ -33,7 +33,7 @@
     <title>Guest24897Chat</title>
     <style>
 body {
-    font-family: Arial, sans-serif;
+    font-family: Arial;
     margin: 0;
     padding: 0;
     display: flex;
@@ -50,7 +50,7 @@ body {
     #chat-container {
         width: 400px;
         background-color: #fff;
-        border-radius: 10px;
+        border-radius: 10000px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         overflow: hidden;
     }
@@ -141,7 +141,7 @@ body {
 
 @media (prefers-color-scheme: dark), (prefers-color-scheme: no-preference) {
     body {
-        background-color: #1a1a1a;
+        background: url(https://wallpaper.forfun.com/fetch/7e/7e9aa2c94293ad2123c975237f49dc0a.jpeg);
     }
 
     #chat-container {
@@ -193,7 +193,7 @@ body {
     }
 
     #send-button:hover {
-        background-color: #0056b3;
+        background-color: #0056b1;
     }
 
     .message-container {
@@ -223,7 +223,7 @@ body {
 
     .notification.reconnecting {
         color: #ff1493;
-        animation: pulse 1s infinite;
+        animation: pulse 0.5s infinite;
     }
 
     @keyframes pulse {
@@ -240,7 +240,9 @@ body {
 }
 
     </style>
+    
 </head>
+
 <body>
     <script>
         // Function to check if the user's IP address is banned
@@ -271,19 +273,17 @@ body {
     </div>
     <div id="chat-container">
         <center style="color: #ffffff;"><br><span class="material-symbols-outlined">
-signal_wifi_statusbar_not_connected
-</span><br> Make sure you are connected to Wi-Fi. If you lost connection, this may can be Wi-Fi, or you have been banned from Guest24897Chat. Have nice chatting! <br> <br><hr><br><span class="material-symbols-rounded">
-warning
-</span><br><b>Warning! </b><br>You are using Guest24897Chat Pre-Beta. This may can cause problems. <br><br><hr><br><span class="material-symbols-outlined">
-person
-</span><br> Username <b style="color: red">* (Required)</b>: <input type="text" id="username-input" class="username-input" placeholder="Enter your username here..." required="true" min="1"></center>
+            <p>
+    <small style="color: gray;"><p>Guest24897Chat v0.2.2</p></small></p><small style=""><small>dark fish</small></small><hr></span>
+    <span class="material-symbols-outlined">
+personUsername <b style="color: red">*</b>:
+</span><br><input type="text" id="username-input" class="username-input" placeholder="Enter your username to use." required="true" min="1" max="20"></center>
         <div id="message-area"></div>
-        <textarea id="message-input" placeholder="Type message here..." rows="3"></textarea>
+        <textarea id="message-input" placeholder="Enter your message to send." rows="3"></textarea>
         <button id="send-button"><span class="material-symbols-outlined">
 send
 </span><br> Send</button>
-<br><small style="text-align: right; color: gray;"><p>Guest24897Chat v0.2.1 Pre-Beta</p></small>
-<br><small style="text-align: right; color: gray;"><p>Pre-beta can contain problems.</p></small>
+<br>
 <div id="connection-status" class="notification"></div>
     </div>
     
@@ -335,7 +335,9 @@ send
             const message = messageInput.value.trim();
             if (message !== '') {
                 const data = {
-                    username: getUsername(),
+                    username: "<span class="material-symbols-outlined">
+person
+</span>" + getUsername(),
                     message_text: message
                 };
                 socket.send(JSON.stringify(data));
