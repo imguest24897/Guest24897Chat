@@ -236,6 +236,9 @@ body {
         100% {
             opacity: 0;
         }
+        .invisible {
+            display: none;
+        }
     }
 }
 
@@ -274,7 +277,7 @@ body {
     <div id="chat-container">
         <center style="color: #ffffff;"><br><span class="material-symbols-outlined">
             <p>
-    <small style="color: gray;"><p>Guest24897Chat v0.2.2</p></small></p><small style=""><small>dark fish</small></small><hr></span>
+    <small style="color: gray;"><p>Guest24897Chat</p></small></p><small style=""><small>dark fish</small></small><hr></span>
     <span class="material-symbols-outlined">
 personUsername <b style="color: red">*</b>:
 </span><br><input type="text" id="username-input" class="username-input" placeholder="Enter your username to use." required="true" min="1" max="20"></center>
@@ -335,9 +338,7 @@ send
             const message = messageInput.value.trim();
             if (message !== '') {
                 const data = {
-                    username: "<span class="material-symbols-outlined">
-person
-</span>" + getUsername(),
+                    username: getUsername(),
                     message_text: message
                 };
                 socket.send(JSON.stringify(data));
@@ -366,6 +367,9 @@ person
             }
             if (username === 'buttons') {
                 messageContent.classList.add('send-button');
+            }
+            if (username === '') {
+                messageContent.classList.add('invisible');
             }
             messageContent.textContent = `${username}: ${message}`;
             messageContainer.appendChild(messageContent);
