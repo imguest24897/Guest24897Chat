@@ -299,7 +299,7 @@ send
 
         // Function to establish WebSocket connection
         function connect() {
-            socket = new WebSocket('wss://03c6b1f2781057621f4f927f0c3a887a.serveo.net'); // Change this URL to your WebSocket server URL
+            socket = new WebSocket('ws://localhost:5152'); // Change this URL to your WebSocket server URL
 
             // WebSocket event listeners
             socket.onopen = function(event) {
